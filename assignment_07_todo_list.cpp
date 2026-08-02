@@ -80,3 +80,93 @@
 #include <string>
 using namespace std;
 
+// Function to display the menu and get the user's choice
+int displayMenu() {     
+    
+    cout << "============================\n";
+    cout << "     TO-DO LIST MENU\n";
+    cout << "============================\n";
+    cout << "1. Add task\n";
+    cout << "2. View tasks\n";
+    cout << "3. Delete task\n";
+    cout << "4. Quit\n";
+    cout << "Enter your choice (1-4): ";
+
+    int choice;
+    cin >> choice;
+    cin.ignore(); // Clear the newline character from the input buffer
+    return choice;
+}
+
+// Function to add a task to the list
+void addTask(vector<string>& tasks) {
+    cout << "Enter task: ";
+    string task;
+    getline(cin, task);
+    tasks.push_back(task);
+    cout << "Task added: \"" << task << "\"\n";
+}
+
+// Function to view all tasks in the list
+void viewTasks(const vector<string>& tasks) {
+    if (tasks.empty()) {
+        cout << "Your task list is empty.\n";
+    } else {
+        cout << "Your Tasks:\n";
+        for (size_t i = 0; i < tasks.size(); ++i) {
+            cout << (i + 1) << ". " << tasks[i] << "\n";
+        }
+    }
+}
+
+// Function to delete a task from the list
+void deleteTask(vector<string>& tasks) {   
+    if (tasks.empty()) {
+        cout << "Your task list is empty. Nothing to delete.\n";
+        return;
+    }
+
+    viewTasks(tasks);
+    cout << "Enter task number to delete: ";
+    int taskNumber;
+    cin >> taskNumber;
+    cin.ignore(); // Clear the newline character from the input buffer
+
+    if (taskNumber < 1 || taskNumber > static_cast<int>(tasks.size())) {
+        cout << "Error: Invalid task number.\n";
+    } else {
+        string removedTask = tasks[taskNumber - 1];
+        tasks.erase(tasks.begin() + (taskNumber - 1));
+        cout << "Task \"" << removedTask << "\" has been removed.\n";
+    }
+}
+
+// Main function to run the to-do list application
+int main() {    
+    vector<string> tasks; // Vector to store tasks
+    bool running = true;
+
+    while (running) {
+        int choice = displayMenu();
+
+        switch (choice) {
+            case 1:
+                addTask(tasks);
+                break;
+            case 2:
+                viewTasks(tasks);
+                break;
+            case 3:
+                deleteTask(tasks);
+                break;
+            case 4:
+                cout << "Goodbye!\n";
+                running = false;
+                break;
+            default:
+                cout << "Error: Invalid choice. Please enter a number between 1 and 4.\n";
+        }
+    }
+
+    return 0;
+}
